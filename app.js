@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const loginRouter = require("./routes/login");
 const registerRouter = require("./routes/register");
+const todoRouter = require("./routes/todo");
 
 mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost/pizza", {
   useNewUrlParser: true,
@@ -31,8 +32,9 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(express.urlencoded({ extended: true }));
-app.use("/", loginRouter);
+app.use("/login", loginRouter);
 app.use("/register", registerRouter);
+app.use("/", todoRouter);
 
 app.listen(3000, ()=>{
     console.log("server is listening");

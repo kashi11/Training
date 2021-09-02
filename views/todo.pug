@@ -1,0 +1,18 @@
+doctype html
+
+html
+    head 
+        title Todo App
+    body 
+        h3 Todo 
+        p #{error}
+        form(action="/", method="post", )
+            label(for="todo")  Add Todo
+            input(type="text", id="todo", name="todo")
+            button(type="submit") Add
+        for todo in todos
+            div 
+                span #{todo.todo}
+        
+         
+        

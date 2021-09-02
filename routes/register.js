@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require("../models/user");
 const bycrypt = require("bcrypt");
+const { uuid } = require('uuidv4');
 
 router.get("/",(req, res)=>{
     res.render("register");
@@ -15,9 +16,10 @@ router.post("/",(req, res)=>{
             res.render("register",{error: "User Already exists"});
         }
         else{
+            const userId = uuid();
             bycrypt.hash(password,10,(err, hash)=>{
                 if(hash){
-                    UserModel.create({email,password: hash, name});
+                    UserModel.create({email,password: hash, name, userId});
                     res.redirect("/");
                 }
                 else{
