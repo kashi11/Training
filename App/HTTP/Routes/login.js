@@ -1,16 +1,12 @@
 var express = require('express');
 require("dotenv").config();
 var router = express.Router();
-const UserModel = require("../mongoModels/user");
+const UserModel = require("../../../mongoModels/user");
 const bycrypt = require("bcrypt");
-const User = require('../SequelizeModels').User;
-router.get("/",(req, res)=>{
-    if(req.session.isLoggedIn){
-        res.redirect("/");
-     }
-     else{
-        res.render("login");
-     }
+const User = require('../../../SequelizeModels').User;
+const auth = require('../Middleware/auth');
+router.get("/",auth,(req, res)=>{
+    res.redirect("/");
 })
 
 router.post("/",(req, res)=>{

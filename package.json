@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app"
+    "dev": "nodemon ./Bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +20,8 @@
     "pug": "^3.0.2",
     "sequelize": "^6.6.5",
     "uuidv4": "^6.2.12"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
 }

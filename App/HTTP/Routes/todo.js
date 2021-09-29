@@ -2,29 +2,25 @@ var express = require('express');
 require("dotenv").config();
 const { uuid } = require('uuidv4');
 var router = express.Router();
-var TodoModel = require("../mongoModels/todo");
-var Todo = require("../SequelizeModels").Todo;
-router.get("/",(req, res)=>{
-    if(req.session.isLoggedIn){
-        if(process.env.DRIVER==="mongo"){
-            TodoModel.find({userId: req.session.userId, isDeleted: false},(err, todos)=>{
-                res.render("todo",{todos: todos});
-            })
-        }
-        else{
-            Todo.findAll({where:{userId: req.session.userId, isDeleted: false}}).then(todos=>{
-                res.render("todo",{todos: todos});
-            }).catch(e=>{
-                res.send(e);
-            })
-        }
-     }
-     else{
-        res.redirect("/login");
-     }
+var TodoModel = require("../../../mongoModels/todo");
+var Todo = require("../../../SequelizeModels").Todo;
+const auth = require("../Middleware/auth");
+router.get("/",auth,(req, res)=>{
+    if(process.env.DRIVER==="mongo"){
+        TodoModel.find({userId: req.session.userId, isDeleted: false},(err, todos)=>{
+            res.render("todo",{todos: todos});
+        })
+    }
+    else{
+        Todo.findAll({where:{userId: req.session.userId, isDeleted: false}}).then(todos=>{
+            res.render("todo",{todos: todos});
+        }).catch(e=>{
+            res.send(e);
+        })
+    }
 })
 
-router.post("/",(req, res)=>{
+router.post("/",auth,(req, res)=>{
     const {todo} = req.body;
     const todoId = uuid();
     const userId = req.session.userId;
@@ -45,7 +41,7 @@ router.post("/",(req, res)=>{
     }
 })
 
-router.delete("/:todoId",(req, res)=>{
+router.delete("/:todoId",auth,(req, res)=>{
     const {todoId} = req.params;
     if(process.env.DRIVER==="mongo"){
         TodoModel.updateOne({todoId: todoId},{isDeleted: true},(err,todo)=>{

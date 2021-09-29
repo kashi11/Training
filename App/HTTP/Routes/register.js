@@ -1,8 +1,8 @@
 var express = require('express');
 require("dotenv").config();
-const User = require('../SequelizeModels').User;
+const User = require('../../../SequelizeModels').User;
 var router = express.Router();
-var UserModel = require("../mongoModels/user");
+var UserModel = require("../../../mongoModels/user");
 const bycrypt = require("bcrypt");
 const { uuid } = require('uuidv4');
 

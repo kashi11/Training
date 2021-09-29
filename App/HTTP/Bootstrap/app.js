@@ -4,13 +4,13 @@ const path = require("path");
 const pug = require("pug");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
-const todoRouter = require("./routes/todo");
+const loginRouter = require("../Routes/login");
+const registerRouter = require("../Routes/register");
+const todoRouter = require("../Routes/todo");
 
 
 if(process.env.DRIVER==="sequalize"){
-  const db = require("./SequelizeModels");
+  const db = require("../../../SequelizeModels");
   db.sequelize.sync().then(() => {
     console.log("db is connected");
   });
@@ -36,7 +36,7 @@ else{
 
 const app = express();
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "../../../views"));
 app.set("view engine", "pug");
 app.use(express.json());
 app.use(session({
@@ -49,6 +49,4 @@ app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/", todoRouter);
 
-app.listen(3000, ()=>{
-    console.log("server is listening");
-})
+module.exports = app;
